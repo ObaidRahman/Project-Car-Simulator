@@ -1,1 +1,333 @@
-<!Doctype html><html><head>    <meta charset="utf-8"/>    <title>Bluetooth Web-app</title>    <script src="/socket.io/socket.io.js"></script>    <link rel='stylesheet' href='/stylesheets/style.css'/>    <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script></head><body><h1>Bluetooth Web-app</h1><canvas id="canvas"></canvas><button>Search Bluetooth devices</button><ul></ul><script type="text/javascript">    var socket = io();    var global;   // var sleep = require('sleep');        var canvas = document.getElementById("canvas");        var processing = new Processing(canvas, function (processing) {            processing.size(400, 400);            processing.background(0xFFF);            var mouseIsPressed = false;            processing.mousePressed = function () {                mouseIsPressed = true;            };            processing.mouseReleased = function () {                mouseIsPressed = false;            };            var keyIsPressed = false;            processing.keyPressed = function () {                keyIsPressed = true;            };            processing.keyReleased = function () {                keyIsPressed = false;            };            function getImage(s) {                var url = "https://www.kasandbox.org/programming-images/" + s + ".png";                processing.externals.sketch.imageCache.add(url);                return processing.loadImage(url);            }            // use degrees rather than radians in rotate function            var rotateFn = processing.rotate;            processing.rotate = function (angle) {                rotateFn(processing.radians(angle));            };            with (processing) {                var code = "I am rich";                var unlockb1 = false;                var unlock1 = true;                var unlock2 = true;                var xcord = 200;                var line1 = 183;                var line2 = 322;                var line3 = 73;                var line4 = 19;                var speed = 0;                var leaf1 = 120;                var leaf2 = 120;                var leaf3 = 276;                var bark1 = 120;                var bark2 = 110;                var bark3 = 267;                var sl = 120;                var mx = 0;                var bl = 0;                var GPS = 44.579;                var car = function () {                    fill(255, 0, 0);                    rect(124, 254, 162, 47, 120);                    fill(0, 0, 0);                    ellipse(124, 307, 12, 39);                    ellipse(288, 307, 12, 39);                    fill(204, 204, 204);                    rect(118, 293, 175, 21, 120);                    fill(255, 255, 255);                    rect(131, 224, 148, 33, 86);                };                var drawBonusCar1 = function () {                    noStroke();                    fill(31, 29, 29);                    rect(xcord - 22, 313, 26, 53, 15);//wheel 1                    rect(xcord + 75, 313, 26, 53, 15);//wheel 2                    fill(71, 71, 71);                    rect(xcord - 25, 305, 129, 49, 25);//body                    rect(xcord - 12, 287, 100, 51, 21);//roof                    fill(59, 56, 56);                    rect(xcord - 1, 291, 80, 16, 5);//window                    fill(0, 0, 0);                    rect(xcord - 27, 300, 132, 5, 7);//tailfin                    rect(xcord - 1, 301, 5, 15, 5);//tailfin support 1                    rect(xcord + 76, 301, 5, 15, 5);//tailfin support 2                    stroke(161, 0, 0);                    strokeWeight(3);                    fill(250, 0, 0);                    ellipse(xcord - 9, 325, 15, 15);//taillight1                    ellipse(xcord + 14, 325, 15, 15);//taillight2                    ellipse(xcord + 67, 325, 15, 15);//taillight3                    ellipse(xcord + 89, 325, 15, 15);//taillight4                    stroke(166, 166, 166);                    fill(255, 255, 255);                    rect(xcord + 21, 335, 40, 22);//license plate                    fill(105, 105, 105);                    textSize(8);                    text("AUDI 007", xcord + 27, 349);//license plate #                    stroke(107, 107, 107);                    fill(207, 207, 207);                    ellipse(xcord + 88, 350, 12, 12);//exaust pipe 1                    ellipse(xcord - 7, 350, 12, 12);//exaust pipe 2                    if (keyIsPressed && keyCode === RIGHT && xcord < 250 && speed > 0) {                        xcord += 5;                    }                    if (keyIsPressed && keyCode === LEFT && xcord > 50 && speed > 0) {                        xcord -= 5;                    }                };                var drawBonusCar2 = function () {                    noStroke();                    fill(0, 0, 0);                    rect(xcord - 22, 313, 26, 53, 15);//wheel 1                    rect(xcord + 75, 313, 26, 53, 15);//wheel 2                    fill(222, 222, 222);                    rect(xcord - 25, 305, 129, 49, 25);//body                    rect(xcord - 12, 287, 100, 51, 21);//roof                    fill(92, 92, 92);                    rect(xcord - 1, 291, 80, 16, 5);//window                    fill(0, 0, 0);                    stroke(138, 138, 138);                    strokeWeight(3);                    fill(191, 82, 82);                    ellipse(xcord - 9, 325, 15, 15);//taillight1                    ellipse(xcord + 14, 325, 15, 15);//taillight2                    ellipse(xcord + 67, 325, 15, 15);//taillight3                    ellipse(xcord + 89, 325, 15, 15);//taillight4                    stroke(166, 166, 166);                    fill(255, 255, 255);                    rect(xcord + 21, 335, 40, 22);//license plate                    fill(105, 105, 105);                    textSize(8);                    text("BMW #2", xcord + 27, 349);//license plate #                    stroke(107, 107, 107);                    fill(207, 207, 207);                    ellipse(xcord + 88, 350, 12, 12);//exaust pipe 1                    ellipse(xcord - 7, 350, 12, 12);//exaust pipe 2                    if (keyIsPressed && keyCode === RIGHT && xcord < 250 && speed > 0) {                        xcord += 5;                        speed += 0.5;                    }                    if (keyIsPressed && keyCode === LEFT && xcord > 50 && speed > 0) {                        xcord -= 5;                        speed += 0.5;                    }                };                var bg1 = function () {                    noStroke();                    background(255, 196, 0);                    fill(0, 0, 0);                    textSize(22);                    noStroke();                    fill(217, 149, 71);                    ellipse(100, 154, 156, 100);//sand hill                    ellipse(-14, 177, 156, 100);//sand hill                    ellipse(324, 161, 156, 100);//sand hill                    rect(-5, 165, 423, 400);//sand                    fill(235, 206, 159);                    fill(145, 86, 34);                    arc(54, 210, 176, 10, -162, 20);//sand dune                    arc(25, 245, 77, 10, -162, 20);//sand dune                    arc(52, 277, 77, 10, -162, 20);//sand dune                    arc(334, 263, 77, 10, -162, 20);//sand dune                    arc(352, 239, 167, 10, -162, 20);//sand dune                    fill(158, 158, 158);                    quad(177, 161, -92, 607, 408, 454, 228, 161);                    fill(255, 225, 0);                    rect(191, line1, 19, 39);                    rect(191, line2, 19, 42);                    rect(191, line3, 19, 44);                    rect(191, line4, 19, 44);                    fill(110, 89, 33);                    ellipse(leaf1, leaf2, 62, 54);                    ellipse(leaf3, leaf2, 62, 54);                    fill(255, 196, 0);                    rect(178, 35, 59, 124);                    fill(0, 0, 0);                    textSize(24);                    text("Speed: " + speed + "\nSpeed Limit: " + sl, 36, 30);                    text("You have driven " + mx, 37, 98);                };                var bg = function () {                    background(0, 255, 234);                    fill(0, 161, 35);                    rect(-27, 158, 444, 273);                    fill(158, 158, 158);                    quad(177, 161, -92, 607, 408, 454, 228, 161);                    fill(255, 225, 0);                    rect(191, line1, 19, 39);                    rect(191, line2, 19, 42);                    rect(191, line3, 19, 44);                    fill(0, 255, 234);                    rect(140, 14, 120, 144);                    fill(143, 116, 41);                    rect(bark2, bark1, 22, 53);                    rect(bark3, bark1, 22, 53);                    fill(21, 255, 0);                    ellipse(leaf1, leaf2, 62, 54);                    ellipse(leaf3, leaf2, 62, 54);                    fill(0, 0, 0);                    textSize(24);                    text("Speed: " + speed + "\nSpeed Limit: " + sl + "\n Break Level: " + bl, 36, 30);                    text("You have driven " + mx, 48, 110);                };                var draw = function () {                    function sleep(milliseconds) {                        var start = new Date().getTime();                        for (var i = 0; i < 1e7; i++) {                            if ((new Date().getTime() - start) > milliseconds){                                break;                            }                        }                    }                    noStroke();                    line1 = line1 + speed;                    line2 = line2 + speed;                    line3 = line3 + speed;                    line4 = line4 + speed;                    mx = Math.floor((mx + speed)/10);                    GPS += Math.floor((mx/1.5));                    if (unlockb1 === true && code === "MyCar1") {                        bg1();                        text("Great Car", 20, 395);                    } else {                        bg();                    }                    if (unlock1 === true && code === "MyCar2") {                        drawBonusCar1();                        sl = 190;                        textSize(30);                        fill(0, 0, 0);                        text("AWESOME..!!", 40, 395);                    } else if (unlock2 === true && code === "I am rich") {                        drawBonusCar2();                        sl = 150;                    } else {                        car();                    }                    leaf1 -= speed;                    leaf2 += speed;                    leaf3 += speed;                    bark1 += speed;                    bark2 -= speed;                    bark3 += speed;                    if (line4 >= 410) {                        line4 = 59;                    }                    if (line3 >= 410) {                        line3 = 161;                    }                    if (line2 >= 410) {                        line2 = 161;                    }                    if (line1 >= 410) {                        line1 = 161;                    }                    if (bark1 >= 320) {                        leaf1 = 120;                        leaf2 = 120;                        leaf3 = 276;                        bark1 = 120;                        bark2 = 110;                        bark3 = 267;                    }                    if (keyIsPressed && key.toString() === "a") {                        speed -= 1;                        bl = 1;                        if (speed <= 0) {                            speed = 0;                        }                        sleep(100);                        socket.emit('message4', '$' + speed + ',' + bl + ',' + GPS + '$' );                    }                    if (keyIsPressed && key.toString() === "s") {                        speed -= 2.5;                        bl = 2;                        if (speed <= 0) {                            speed = 0;                        }                        sleep(100);                        socket.emit('message3', '$' + speed + ',' + bl + ',' + GPS + '$' );                    }                    if (keyIsPressed && key.toString() === "d") {                        speed -= 7;                        bl = 3;                        if (speed <= 0) {                            speed = 0;                        }                        sleep(100);                        socket.emit('message2', '$' + speed + ',' + bl + ',' + GPS + '$' );                    }                    if (keyIsPressed && key.toString() === "w") {                        speed += 1;                        mx = (mx + speed) / 10;                        sleep(100);                        global = 0;                        var clearit = setInterval(function () {                            //if (keyIsPressed == 'true') {                                socket.emit('message0', '$' + speed + ',' + bl + ',' + GPS + '$');                            //}                            if(speed == 0){                                clearInterval(clearit);                            }                        }, 1000);                    }                    else {                        speed -= 0.5;                    }                    if (speed <= 0) {                        speed = 0;                    }                    if (speed >= sl) {                        speed = sl;                    }                };                if (typeof draw !== 'undefined') processing.draw = draw;            }            socket.on('msg',function(data){                console.log(data);            });        });        /*socket.on('search_Bluetooth_stopped', function(){            $('button').html('Search Bluetooth devices');        });        socket.on('connected_Bluetooth', function(data){            var element = $('.connect-device[data-address="'+ data.address + '"]');            element.html(element[0].innerText + ' <b class="label label-success">live</b>');        });        socket.on('device', function(data){            $('ul').append('<li><a class="connect-device" data-address ="'+ data.address +'">'+ data.name +'</li>');            $('.connect-device').on('click',function(event){                var address = $(event.target).attr('data-address');                socket.emit('open_Bluetooth_Connection', address);                //socket.emit('send_To_Bluetooth','hello world','utf-8');            })        });        $('button').on('click', function(event){            event.preventDefault();            $('button').html('Scanning');            $('.bluetoothList').html('');            socket.emit('search_Bluetooth',"new");        });        $('input').on('submit', function (){        });        socket.emit('search_Bluetooth',"");*/</script></body></html>
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Bluetooth Web-app</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+<body>
+<h1>Bluetooth Web-app</h1>
+<canvas id="canvas"></canvas>
+<button>Search Bluetooth devices</button>
+<ul>
+
+</ul>
+<script type="text/javascript">
+    var socket = io();
+    var global;
+   // var sleep = require('sleep');
+
+        var canvas = document.getElementById("canvas");
+        var processing = new Processing(canvas, function (processing) {
+            processing.size(400, 400);
+            processing.background(0xFFF);
+
+            var mouseIsPressed = false;
+            processing.mousePressed = function () {
+                mouseIsPressed = true;
+            };
+            processing.mouseReleased = function () {
+                mouseIsPressed = false;
+            };
+
+            var keyIsPressed = false;
+            processing.keyPressed = function () {
+                keyIsPressed = true;
+            };
+            processing.keyReleased = function () {
+                keyIsPressed = false;
+            };
+
+            function getImage(s) {
+                var url = "https://www.kasandbox.org/programming-images/" + s + ".png";
+                processing.externals.sketch.imageCache.add(url);
+                return processing.loadImage(url);
+            }
+
+            // use degrees rather than radians in rotate function
+            var rotateFn = processing.rotate;
+            processing.rotate = function (angle) {
+                rotateFn(processing.radians(angle));
+            };
+
+            with (processing) {
+
+                var code = "My Car";
+
+                var unlockb1 = false;
+                var unlock1 = true;
+                var unlock2 = true;
+                var xcord = 200;
+                var line1 = 183;
+                var line2 = 322;
+                var line3 = 73;
+                var line4 = 19;
+                var speed = 0;
+                var leaf1 = 120;
+                var leaf2 = 120;
+                var leaf3 = 276;
+                var bark1 = 120;
+                var bark2 = 110;
+                var bark3 = 267;
+                var sl = 120;
+                var mx = 0;
+                var bl = 0;
+                var GPS = 44.579;
+                var car = function () {
+                    fill(255, 0, 0);
+                    rect(124, 254, 162, 47, 120);
+                    fill(0, 0, 0);
+                    ellipse(124, 307, 12, 39);
+                    ellipse(288, 307, 12, 39);
+                    fill(204, 204, 204);
+                    rect(118, 293, 175, 21, 120);
+                    fill(255, 255, 255);
+                    rect(131, 224, 148, 33, 86);
+
+                };
+                
+                var drawCar = function () {
+                    noStroke();
+                    fill(0, 0, 0);
+                    rect(xcord - 22, 313, 26, 53, 15);//wheel 1
+                    rect(xcord + 75, 313, 26, 53, 15);//wheel 2
+                    fill(222, 222, 222);
+                    rect(xcord - 25, 305, 129, 49, 25);//body
+                    rect(xcord - 12, 287, 100, 51, 21);//roof
+                    fill(92, 92, 92);
+                    rect(xcord - 1, 291, 80, 16, 5);//window
+                    fill(0, 0, 0);
+
+                    stroke(138, 138, 138);
+                    strokeWeight(3);
+                    fill(191, 82, 82);
+                    ellipse(xcord - 9, 325, 15, 15);//taillight1
+                    ellipse(xcord + 14, 325, 15, 15);//taillight2
+                    ellipse(xcord + 67, 325, 15, 15);//taillight3
+                    ellipse(xcord + 89, 325, 15, 15);//taillight4
+                    stroke(166, 166, 166);
+                    fill(255, 255, 255);
+                    rect(xcord + 21, 335, 40, 22);//license plate
+                    fill(105, 105, 105);
+                    textSize(8);
+                    text("BMW #2", xcord + 27, 349);//license plate #
+                    stroke(107, 107, 107);
+                    fill(207, 207, 207);
+                    ellipse(xcord + 88, 350, 12, 12);//exaust pipe 1
+                    ellipse(xcord - 7, 350, 12, 12);//exaust pipe 2
+                    if (keyIsPressed && keyCode === RIGHT && xcord < 250 && speed > 0) {
+                        xcord += 5;
+                        speed += 0.5;
+                    }
+
+                    if (keyIsPressed && keyCode === LEFT && xcord > 50 && speed > 0) {
+                        xcord -= 5;
+                        speed += 0.5;
+                    }
+                };
+                var bg1 = function () {
+                    noStroke();
+                    background(255, 196, 0);
+
+                    fill(0, 0, 0);
+                    textSize(22);
+
+                    noStroke();
+                    fill(217, 149, 71);
+                    ellipse(100, 154, 156, 100);//sand hill
+                    ellipse(-14, 177, 156, 100);//sand hill
+                    ellipse(324, 161, 156, 100);//sand hill
+                    rect(-5, 165, 423, 400);//sand
+                    fill(235, 206, 159);
+                    fill(145, 86, 34);
+                    arc(54, 210, 176, 10, -162, 20);//sand dune
+                    arc(25, 245, 77, 10, -162, 20);//sand dune
+                    arc(52, 277, 77, 10, -162, 20);//sand dune
+                    arc(334, 263, 77, 10, -162, 20);//sand dune
+                    arc(352, 239, 167, 10, -162, 20);//sand dune
+
+                    fill(158, 158, 158);
+                    quad(177, 161, -92, 607, 408, 454, 228, 161);
+                    fill(255, 225, 0);
+                    rect(191, line1, 19, 39);
+                    rect(191, line2, 19, 42);
+                    rect(191, line3, 19, 44);
+                    rect(191, line4, 19, 44);
+
+                    fill(110, 89, 33);
+                    ellipse(leaf1, leaf2, 62, 54);
+                    ellipse(leaf3, leaf2, 62, 54);
+                    fill(255, 196, 0);
+                    rect(178, 35, 59, 124);
+                    fill(0, 0, 0);
+                    textSize(24);
+                    text("Speed: " + speed + "\nSpeed Limit: " + sl, 36, 30);
+                    text("You have driven " + mx, 37, 98);
+
+                };
+                var bg = function () {
+                    background(0, 255, 234);
+                    fill(0, 161, 35);
+                    rect(-27, 158, 444, 273);
+                    fill(158, 158, 158);
+                    quad(177, 161, -92, 607, 408, 454, 228, 161);
+                    fill(255, 225, 0);
+                    rect(191, line1, 19, 39);
+                    rect(191, line2, 19, 42);
+                    rect(191, line3, 19, 44);
+
+                    fill(0, 255, 234);
+                    rect(140, 14, 120, 144);
+                    fill(143, 116, 41);
+                    rect(bark2, bark1, 22, 53);
+                    rect(bark3, bark1, 22, 53);
+                    fill(21, 255, 0);
+                    ellipse(leaf1, leaf2, 62, 54);
+                    ellipse(leaf3, leaf2, 62, 54);
+                    fill(0, 0, 0);
+                    textSize(24);
+                    text("Speed: " + speed + "\nSpeed Limit: " + sl + "\n Break Level: " + bl, 36, 30);
+                    text("You have driven " + mx, 48, 110);
+                };
+
+                var draw = function () {
+
+                    function sleep(milliseconds) {
+                        var start = new Date().getTime();
+                        for (var i = 0; i < 1e7; i++) {
+                            if ((new Date().getTime() - start) > milliseconds){
+                                break;
+                            }
+                        }
+                    }
+
+                    noStroke();
+                    line1 = line1 + speed;
+                    line2 = line2 + speed;
+                    line3 = line3 + speed;
+                    line4 = line4 + speed;
+                    mx = Math.floor((mx + speed)/10);
+
+                    GPS += Math.floor((mx/1.5));
+
+                    if (unlockb1 === true && code === "MyCar1") {
+                        bg1();
+                        text("Great Car", 20, 395);
+                    } else {
+                        bg();
+                    }
+
+                    if (unlock1 === true && code === "MyCar2") {
+                        //drawBonusCar1();
+                        sl = 190;
+                        textSize(30);
+                        fill(0, 0, 0);
+                        text("AWESOME..!!", 40, 395);
+                    } else if (unlock2 === true && code === "My Car") {
+
+                        drawCar();
+
+                        sl = 150;
+                    } else {
+                        car();
+                    }
+                    leaf1 -= speed;
+                    leaf2 += speed;
+                    leaf3 += speed;
+                    bark1 += speed;
+                    bark2 -= speed;
+                    bark3 += speed;
+                    if (line4 >= 410) {
+                        line4 = 59;
+                    }
+                    if (line3 >= 410) {
+                        line3 = 161;
+                    }
+                    if (line2 >= 410) {
+                        line2 = 161;
+                    }
+                    if (line1 >= 410) {
+                        line1 = 161;
+                    }
+                    if (bark1 >= 320) {
+                        leaf1 = 120;
+                        leaf2 = 120;
+                        leaf3 = 276;
+                        bark1 = 120;
+                        bark2 = 110;
+                        bark3 = 267;
+                    }
+                  
+                    if (keyIsPressed && key.toString() === "a") {
+                        speed -= 1;
+                        bl = 1;
+                        if (speed <= 0) {
+                            speed = 0;
+                        }
+                        sleep(100);
+
+                        socket.emit('message4', '$' + speed + ',' + bl + ',' + GPS + '$' );
+                    }
+
+                    if (keyIsPressed && key.toString() === "s") {
+                        speed -= 2.5;
+                        bl = 2;
+                        if (speed <= 0) {
+                            speed = 0;
+                        }
+                        sleep(100);
+
+                        socket.emit('message3', '$' + speed + ',' + bl + ',' + GPS + '$' );
+                    }
+                  
+                    if (keyIsPressed && key.toString() === "d") {
+                        speed -= 7;
+                        bl = 3;
+                        if (speed <= 0) {
+                            speed = 0;
+                        }
+
+                        sleep(100);
+
+                        socket.emit('message2', '$' + speed + ',' + bl + ',' + GPS + '$' );
+                    }
+                  
+                    if (keyIsPressed && key.toString() === "w") {
+
+                        speed += 1;
+                        mx = (mx + speed) / 10;
+                        sleep(100);
+                        global = 0;
+
+                        var clearit = setInterval(function () {                         
+                               socket.emit('message0', '$' + speed + ',' + bl + ',' + GPS + '$');
+                            if(speed == 0){
+                                clearInterval(clearit);
+                            }
+                        }, 1000);
+                    }
+                  
+                    else {
+                        speed -= 0.5;
+                    }
+                    if (speed <= 0) {
+                        speed = 0;
+                    }
+                    if (speed >= sl) {
+                        speed = sl;
+                    }
+
+                };
+
+                if (typeof draw !== 'undefined') processing.draw = draw;
+
+            }
+
+        });
+
+</script>
+</body>
+</html>
